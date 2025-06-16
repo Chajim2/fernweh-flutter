@@ -1,0 +1,10 @@
+modify the single post sreen so that it shows actually relevant info
+when will i be updating it?? should i have a seperate function for it??
+
+might make this a repo
+
+
+
+have to think about whether to use the same system as in the other fernweh projects,
+one function for calling the endpoint wont be enough and redefining all the headers and shit
+is pain
