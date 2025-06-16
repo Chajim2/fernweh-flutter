@@ -23,8 +23,9 @@ class _PostsScreenState extends State<PostsScreen> {
     getPosts(context);
   }
 
-  Future<void> handleClicked(BuildContext context, String text, String title, String author) async{
-    Navigator.pushNamed(context, "/post");
+  Future<void> handleClicked(String text, String title, String author, int entry_id) async{
+    Map<String, dynamic> data = {"text" : text, "title" : title, "author" : author, "id" : entry_id};
+    Navigator.pushNamed(context, "/post", arguments: data);
     return;
   }
 
@@ -75,7 +76,7 @@ class _PostsScreenState extends State<PostsScreen> {
                     title: entry['emotions'].join(", "),
                     author: entry['username'],
                     content: entry['text'],
-                    onTap: () => handleClicked(context, entry['text'], entry['emotions'].join(", "), entry['username']),
+                    onTap: () => handleClicked(entry['text'], entry['emotions'].join(", "), entry['username'], entry['id']),
                   );
                 } else if (entry['username'] ==
                     Provider.of<UserProvider>(
@@ -86,14 +87,14 @@ class _PostsScreenState extends State<PostsScreen> {
                     title: "you commented on this post",
                     author: "you",
                     content: entry['text'],
-                    onTap: () => handleClicked(context, entry['text'], "${entry['usernmae']} commented", entry['username']),
+                    onTap: () => handleClicked(entry['text'], "${entry['usernmae']} commented", entry['username'], entry['id']),
                   );
                 } else{
                   return PostCard(
                     title: "${entry['username']} commented on this post",
                     author: entry['username'],
                     content: entry['text'],
-                    onTap: () => handleClicked(context, entry['text'], "You commented", entry['username']),
+                    onTap: () => handleClicked(entry['text'], "You commented", entry['username'], entry['id']),
                   );
                 }
               },

@@ -1,5 +1,7 @@
-modify the single post sreen so that it shows actually relevant info
-when will i be updating it?? should i have a seperate function for it??
+I think posts work, 
+might wanna test the single post screen when clicking on a comment but i believe it should work
+
+I suppose the only thing left is the confirm screen?? ig
 
 might make this a repo
 
