@@ -23,8 +23,8 @@ class _PostsScreenState extends State<PostsScreen> {
     getPosts(context);
   }
 
-  Future<void> handleClicked(String text, String title, String author, int entry_id) async{
-    Map<String, dynamic> data = {"text" : text, "title" : title, "author" : author, "id" : entry_id};
+  Future<void> handleClicked(String text, String title, String author, int entryId) async{
+    Map<String, dynamic> data = {"text" : text, "title" : title, "author" : author, "id" : entryId};
     Navigator.pushNamed(context, "/post", arguments: data);
     return;
   }
