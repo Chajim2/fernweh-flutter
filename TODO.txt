@@ -1,9 +1,4 @@
-I think posts work, 
-might wanna test the single post screen when clicking on a comment but i believe it should work
-
-I suppose the only thing left is the confirm screen?? ig
-
-might make this a repo
+tweak the icon a little, probably gotta watch a tutorial or sum
 
 
 

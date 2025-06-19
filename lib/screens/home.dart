@@ -65,12 +65,12 @@ class HomeScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   StyledButton(
-                    text: 'Journal',
+                    text: 'journal',
                     onPressed: () => Navigator.pushNamed(context, "/diary"),
                   ),
                   const SizedBox(height: 20),
                   StyledButton(
-                    text: 'Insights',
+                    text: 'insights',
                     onPressed: () => Navigator.pushNamed(context, "/posts"),
                   ),
                 ],

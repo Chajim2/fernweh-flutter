@@ -50,7 +50,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
         }),
       );
       if (response.statusCode == 200) {
-        print(jsonDecode(response.body));
         emotions = jsonDecode(response.body)['emotions'];
         setState(() {
           receivedEmotions = true;

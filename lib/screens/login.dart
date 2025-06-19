@@ -22,16 +22,17 @@ class LoginScreen extends StatelessWidget {
     } else if (password.length < 5) {
       showStyledAlert(context, "invalid login", 'invalid password');
     } else{
+
       final response = await http.post(
         Uri.parse(loginUrl),
         body: jsonEncode({"username": username, "password": password}),
-        headers: {'Content-Type': 'application/json'},
+        headers: DEFAULT_HEADER,
+
       );
+
       if (response.statusCode == 200) {
         //TODO: acces id token in json and set it into provider, navigate to home screen (doesnt exist yet :D)
         Map<String, dynamic> jsonData = jsonDecode(response.body);
-        print("LOGGING IN HERE");
-        print(jsonData['id']);
         Provider.of<UserProvider>(context, listen: false).logIn(newUsername: username, jwtToken: jsonData['id']);
         Navigator.pushNamed(context, "/home");
       } else {
@@ -68,7 +69,7 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(
                   width: 200,
                   child: CommonButton(
-                    text: "asfas",
+                    text: "log in",
                     onPressed: () => handleLogin(context),
                   ),
                 ),
@@ -77,7 +78,7 @@ class LoginScreen extends StatelessWidget {
                   child: SizedBox(
                     width: 200,
                     child: CommonButton(
-                      text: "Register\ninstead",
+                      text: "register\ninstead",
                       onPressed: () => Navigator.pushNamed(context, "/register"),
                     ),
                   ),

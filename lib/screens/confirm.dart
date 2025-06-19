@@ -53,7 +53,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
   Widget build(BuildContext context) {
     const backgroundColor = Color(0xFF1E1E1E);
     const accentColor = Color(0xFFFFB74D);
-    const textColor = Colors.white70;
+    //const textColor = Colors.white70;
    final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 

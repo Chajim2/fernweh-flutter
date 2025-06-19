@@ -72,7 +72,7 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(
                   width: 200,
                   child: CommonButton(
-                    text: "asfas",
+                    text: "register",
                     onPressed: () => handleRegister(context),
                   ),
                 ),
