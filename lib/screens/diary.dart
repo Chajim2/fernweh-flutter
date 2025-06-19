@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fernweh/common/common_widgets.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:fernweh/common/utils.dart';

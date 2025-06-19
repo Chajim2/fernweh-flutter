@@ -41,6 +41,7 @@ class _PostsScreenState extends State<PostsScreen> {
       );
       if (response.statusCode == 200) {
         posts = jsonDecode(response.body);
+        print(posts);
         setState(() {
           isLoadingPosts = false;
         });
