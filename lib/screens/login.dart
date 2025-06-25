@@ -13,35 +13,42 @@ class LoginScreen extends StatelessWidget {
 
   LoginScreen({super.key});
 
-  void handleLogin(BuildContext context) async{
+  void handleLogin(BuildContext context) async {
     String username = usernameController.text;
     String password = passwordController.text;
     if (username.length < 2) {
       showStyledAlert(context, "invalid login", 'invalid username');
     } else if (password.length < 5) {
       showStyledAlert(context, "invalid login", 'invalid password');
-    } else{
-
+    } else {
       final response = await http.post(
         Uri.parse(loginUrl),
         body: jsonEncode({"username": username, "password": password}),
         headers: DEFAULT_HEADER,
-
       );
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = jsonDecode(response.body);
-        Provider.of<UserProvider>(context, listen: false).logIn(newUsername: username, jwtToken: jsonData['id']);
+        Provider.of<UserProvider>(
+          context,
+          listen: false,
+        ).logIn(newUsername: username, jwtToken: jsonData['id']);
         saveRefreshData(jsonData['refresh_token'], username);
         Navigator.pushNamed(context, "/home");
       } else {
-        showStyledAlert(context, "login unsucesfull", jsonDecode(response.body)['message']);
+        showStyledAlert(
+          context,
+          "login unsucesfull",
+          jsonDecode(response.body)['message'],
+        );
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    print("BUILDING A LOGIN SCREEN");
+
     return Scaffold(
       appBar: AppBar(title: Text("login"), leading: Icon(Icons.login)),
       body: Consumer<UserProvider>(
@@ -64,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                     controller: passwordController,
                   ),
                 ),
-                SizedBox(height: 40,),  
+                SizedBox(height: 40),
                 SizedBox(
                   width: 200,
                   child: CommonButton(
@@ -82,17 +89,16 @@ class LoginScreen extends StatelessWidget {
                     width: 200,
                     child: CommonButton(
                       text: "register",
-                      onPressed: () => Navigator.pushNamed(context, "/register"),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, "/register"),
                     ),
                   ),
                 ),
               ],
             ),
           );
-        }
+        },
       ),
     );
   }
 }
-
-

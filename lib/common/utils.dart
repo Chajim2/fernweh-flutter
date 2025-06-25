@@ -99,14 +99,11 @@ Future<bool> shouldSkipLogin(BuildContext context) async {
     username = await secure_storage.read(key: username_key);
   }
   try {
-    //showStyledAlert(context, "HAHA", refreshToken ?? "");
-
     final response = await http.post(
       Uri.parse(refreshUrl),
       body: jsonEncode({"refresh_token": refreshToken ?? ""}),
       headers: DEFAULT_HEADER,
     );
-    //showStyledAlert(context, "HAHA", response.statusCode as String ?? "nun");
 
     if (response.statusCode == 200) {
       print("Token refresh successful.");
