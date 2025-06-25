@@ -1,22 +1,7 @@
 import 'package:fernweh/providers/user_provider.dart';
+import 'package:fernweh/common/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomeScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -39,7 +24,7 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () {
                   // Might wanna reconsider if leaving the app alltogether would be smoother here
                   Provider.of<UserProvider>(context, listen: false).logOut();
-                  Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, '/login');
                 },
                 icon: Icon(Icons.logout),
                 color: accentColor,
@@ -64,12 +49,12 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  StyledButton(
+                  CommonButton(
                     text: 'journal',
                     onPressed: () => Navigator.pushNamed(context, "/diary"),
                   ),
                   const SizedBox(height: 20),
-                  StyledButton(
+                  CommonButton(
                     text: 'insights',
                     onPressed: () => Navigator.pushNamed(context, "/posts"),
                   ),
@@ -83,32 +68,3 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class StyledButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-
-  const StyledButton({super.key, required this.text, required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    const accentColor = Color(0xFFFFB74D);
-
-    return TextButton(
-      onPressed: onPressed,
-      style: TextButton.styleFrom(
-        foregroundColor: accentColor,
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-          side: BorderSide(color: accentColor, width: 1.2),
-        ),
-        textStyle: const TextStyle(
-          fontFamily: 'Georgia',
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      child: Text(text),
-    );
-  }
-}

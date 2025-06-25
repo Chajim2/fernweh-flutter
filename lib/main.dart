@@ -9,6 +9,7 @@ import 'package:fernweh/screens/login.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_provider.dart';
 import 'package:fernweh/screens/confirm.dart';
+import 'package:fernweh/common/utils.dart';
 
 void main() {
   runApp(
@@ -26,17 +27,64 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.amber,
-        fontFamily: "Fantasy",
+        fontFamily: "monospace",
       ),
       routes: {
-        "/": (context) => LoginScreen(),
+        "/": (context) => const AuthGate(),
+        "/login": (context) => LoginScreen(),
         "/register": (context) => RegisterScreen(),
-        "/home" : (context) => HomeScreen(),
-        "/profile" : (context) => ProfileScreen(),
-        "/diary" : (context) => DiaryScreen(),
-        "/posts" : (context) => PostsScreen(),
-        "/post" : (context) => PostScreen(),
-        "/confirm" : (context) => ConfirmScreen(),
+        "/home": (context) => HomeScreen(),
+        "/profile": (context) => ProfileScreen(),
+        "/diary": (context) => DiaryScreen(),
+        "/posts": (context) => PostsScreen(),
+        "/post": (context) => PostScreen(),
+        "/confirm": (context) => ConfirmScreen(),
+        "/icon": (context) => Icon(Icons.home),
+      },
+    );
+  }
+}
+
+class AuthGate extends StatefulWidget {
+  const AuthGate({super.key});
+
+  @override
+  State<AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<AuthGate> {
+  late Future<bool> _skipLoginFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _skipLoginFuture = shouldSkipLogin(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _skipLoginFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (snapshot.hasError) {
+          print("AuthGate Error: ${snapshot.error}");
+          return Scaffold(
+            body: Center(child: Text("An error occurred: ${snapshot.error}")),
+          );
+        }
+
+        if (snapshot.hasData && snapshot.data == true) {
+          print("AuthGate: Success, skipping login.");
+          return HomeScreen();
+        } else {
+          return LoginScreen();
+        }
       },
     );
   }

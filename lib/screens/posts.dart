@@ -41,7 +41,6 @@ class _PostsScreenState extends State<PostsScreen> {
       );
       if (response.statusCode == 200) {
         posts = jsonDecode(response.body);
-        print(posts);
         setState(() {
           isLoadingPosts = false;
         });
@@ -91,11 +90,16 @@ class _PostsScreenState extends State<PostsScreen> {
                     onTap: () => handleClicked(entry['text'], "${entry['usernmae']} commented", entry['username'], entry['id']),
                   );
                 } else{
-                  return PostCard(
-                    title: "${entry['username']} commented on this post",
-                    author: entry['username'],
-                    content: entry['text'],
-                    onTap: () => handleClicked(entry['text'], "You commented", entry['username'], entry['id']),
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.1, // 10% of screen width
+                    ),
+                    child: PostCard(
+                      title: "${entry['username']} commented on this post",
+                      author: entry['username'],
+                      content: entry['text'],
+                      onTap: () => handleClicked(entry['text'], "You commented", entry['username'], entry['id']),
+                    ),
                   );
                 }
               },

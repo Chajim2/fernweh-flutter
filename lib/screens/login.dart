@@ -13,7 +13,6 @@ class LoginScreen extends StatelessWidget {
 
   LoginScreen({super.key});
 
-
   void handleLogin(BuildContext context) async{
     String username = usernameController.text;
     String password = passwordController.text;
@@ -31,21 +30,20 @@ class LoginScreen extends StatelessWidget {
       );
 
       if (response.statusCode == 200) {
-        //TODO: acces id token in json and set it into provider, navigate to home screen (doesnt exist yet :D)
         Map<String, dynamic> jsonData = jsonDecode(response.body);
         Provider.of<UserProvider>(context, listen: false).logIn(newUsername: username, jwtToken: jsonData['id']);
+        saveRefreshData(jsonData['refresh_token'], username);
         Navigator.pushNamed(context, "/home");
       } else {
         showStyledAlert(context, "login unsucesfull", jsonDecode(response.body)['message']);
       }
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login"), leading: Icon(Icons.login)),
+      appBar: AppBar(title: Text("login"), leading: Icon(Icons.login)),
       body: Consumer<UserProvider>(
         builder: (context, UserProvider, child) {
           return Center(
@@ -66,6 +64,7 @@ class LoginScreen extends StatelessWidget {
                     controller: passwordController,
                   ),
                 ),
+                SizedBox(height: 40,),  
                 SizedBox(
                   width: 200,
                   child: CommonButton(
@@ -74,11 +73,15 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
+                  padding: EdgeInsets.only(top: 30.0),
+                  child: Text("don't have an account yet?"),
+                ),
+                Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: SizedBox(
                     width: 200,
                     child: CommonButton(
-                      text: "register\ninstead",
+                      text: "register",
                       onPressed: () => Navigator.pushNamed(context, "/register"),
                     ),
                   ),
@@ -91,3 +94,5 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
+
+

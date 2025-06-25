@@ -31,14 +31,14 @@ class _DiaryScreenState extends State<DiaryScreen> {
   void handleClickedEmotion(int emotionInd) {
     confirmedEmotions.add(emotions[emotionInd]['emotion'].trim());
     emotions.removeAt(emotionInd);
-    print(confirmedEmotions);
     setState(() {
       emotionClicked = true;
     });
   }
 
-  Future<void> _fetchEmotions(String text) async {
+  Future<void> _fetchEmotions() async {
     const String url = 'https://chajim.pythonanywhere.com/get_emotions';
+
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -48,6 +48,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
           "text": _diaryController.text.trim(),
         }),
       );
+
       if (response.statusCode == 200) {
         emotions = jsonDecode(response.body)['emotions'];
         setState(() {
@@ -64,6 +65,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
       });
       print('Error fetching requests: $e');
     }
+
     //TODO 1. send the request, 2. display the emotions, 3. refresh when one is chosen/reloaded, 4.save all of it
   }
 
@@ -72,7 +74,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
     const backgroundColor = Color(0xFF1E1E1E);
     const accentColor = Color(0xFFFFB74D);
     const textColor = Colors.white70;
-
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -92,9 +93,9 @@ class _DiaryScreenState extends State<DiaryScreen> {
                     icon: const Icon(Icons.arrow_back),
                     color: accentColor,
                   ),
-                  if(emotionClicked)SizedBox(width: 30),
+                  if (emotionClicked) SizedBox(width: 27),
                   Text(
-                    'Journal Entry',
+                    'how are you feeling?',
                     style: TextStyle(
                       color: accentColor,
                       fontSize: 18,
@@ -103,12 +104,19 @@ class _DiaryScreenState extends State<DiaryScreen> {
                     ),
                   ),
                   // Empty container for spacing
-                  if(!emotionClicked) SizedBox(width: 48),
+                  if (!emotionClicked) SizedBox(width: 48),
                   if (emotionClicked)
                     CommonButton(
                       text: "Continue",
                       onPressed: () {
-                        Navigator.pushNamed(context, "/confirm", arguments: {"emotions" : confirmedEmotions, "text" : _diaryController.text});
+                        Navigator.pushNamed(
+                          context,
+                          "/confirm",
+                          arguments: {
+                            "emotions": confirmedEmotions,
+                            "text": _diaryController.text,
+                          },
+                        );
                       },
                     ),
                 ],
@@ -118,88 +126,97 @@ class _DiaryScreenState extends State<DiaryScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  children: [
-                    // Date display
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: Text(
-                        _getCurrentDate(),
-                        style: const TextStyle(
-                          color: textColor,
-                          fontSize: 14,
-                          fontFamily: 'Georgia',
-                        ),
-                      ),
-                    ),
-                    // Large text field
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: accentColor.withOpacity(0.3),
-                            width: 1.2,
-                          ),
-                          borderRadius: BorderRadius.zero,
-                        ),
-                        child: TextField(
-                          controller: _diaryController,
-                          focusNode: _focusNode,
-                          maxLines: null,
-                          expands: true,
-                          textAlignVertical: TextAlignVertical.top,
-                          style: const TextStyle(
-                            color: textColor,
-                            fontSize: 16,
-                            fontFamily: 'Georgia',
-                            height: 1.5,
-                          ),
-                          decoration: InputDecoration(
-                            hintText: 'Write your thoughts here...',
-                            hintStyle: TextStyle(
-                              color: textColor.withOpacity(0.5),
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 600),
+                    child: Column(
+                      children: [
+                        // Date display
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20.0),
+                          child: Text(
+                            _getCurrentDate(),
+                            style: const TextStyle(
+                              color: textColor,
+                              fontSize: 14,
                               fontFamily: 'Georgia',
                             ),
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.all(16),
                           ),
-                          cursorColor: accentColor,
                         ),
-                      ),
-                    ),
-                    //check if emotions were received
-                    receivedEmotions
-                        ? Column(
-                            children: emotions
-                                .take(3)
-                                .map(
-                                  (pair) => DefinitionCard(
-                                    word: pair['emotion'].trim() ?? "",
-                                    definition: pair['description'] ?? "",
-                                    onTap: () {
-                                      handleClickedEmotion(
-                                        emotions.indexOf(pair),
-                                      );
+                        // Large text field
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: 600,
+                            maxHeight: 600,
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: accentColor.withOpacity(0.3),
+                                width: 1.2,
+                              ),
+                              borderRadius: BorderRadius.zero,
+                            ),
+                            child: TextField(
+                              controller: _diaryController,
+                              focusNode: _focusNode,
+                              maxLines: null,
+                              expands: true,
+                              textAlignVertical: TextAlignVertical.top,
+                              style: const TextStyle(
+                                color: textColor,
+                                fontSize: 16,
+                                fontFamily: 'Georgia',
+                                height: 1.5,
+                              ),
+                              decoration: InputDecoration(
+                                hintText: 'Write your thoughts here...',
+                                hintStyle: TextStyle(
+                                  color: textColor.withOpacity(0.5),
+                                  fontFamily: 'Georgia',
+                                ),
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.all(16),
+                              ),
+                              cursorColor: accentColor,
+                            ),
+                          ),
+                        ),
+                        //check if emotions were received
+                        receivedEmotions
+                            ? Column(
+                                children: emotions
+                                    .take(3)
+                                    .map(
+                                      (pair) => DefinitionCard(
+                                        word: pair['emotion'].trim() ?? "",
+                                        definition: pair['description'] ?? "",
+                                        onTap: () {
+                                          handleClickedEmotion(
+                                            emotions.indexOf(pair),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                    .toList(),
+                              )
+                            : Column(
+                                children: [
+                                  const SizedBox(height: 20),
+                                  // Save button
+                                  CommonButton(
+                                    text: 'save',
+                                    onPressed: () async {
+                                      _fetchEmotions();
                                     },
                                   ),
-                                )
-                                .toList(),
-                          )
-                        : Column(
-                            children: [
-                              const SizedBox(height: 20),
-                              // Save button
-                              CommonButton(
-                                text: 'Save Entry',
-                                onPressed: () async {
-                                  _fetchEmotions("afsian");
-                                },
+                    
+                                  const SizedBox(height: 20),
+                                ],
                               ),
-
-                              const SizedBox(height: 20),
-                            ],
-                          ),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),

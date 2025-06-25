@@ -18,7 +18,9 @@ class PostScreen extends StatefulWidget {
 
 class _PostsScreenState extends State<PostScreen> {
   bool loadingComments = true;
+  TextEditingController _commnentController = TextEditingController();
   List<dynamic> comments = [];
+  
   Future<void> getComments() async {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
@@ -37,6 +39,7 @@ class _PostsScreenState extends State<PostScreen> {
         setState(() {
           loadingComments = false;
         });
+        print(jsonDecode(response.body)['message']);
       } else {
         throw Exception(
           'Failed to load comments: ${jsonDecode(response.body)['message']}',
@@ -51,7 +54,38 @@ class _PostsScreenState extends State<PostScreen> {
     return;
   }
 
-  Future<void> setValues(String title, String author, String text) async {}
+  Future<void> postComment(BuildContext context) async {
+    final args =
+            ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    final response = await http.post(
+      Uri.parse("https://chajim.pythonanywhere.com/post_comment"),
+      headers: DEFAULT_HEADER,
+      body: jsonEncode({
+        "id": Provider.of<UserProvider>(context, listen: false).getJwtToken(),
+        "post_id": args['id'],
+        "text" : _commnentController.text,
+      }),
+    );
+    try {
+      if (response.statusCode == 201) {
+        setState(() {
+          loadingComments = false;
+        });
+        showStyledAlert(context, "commnent", "comment posted");
+      } else {
+        throw Exception(
+          'Failed to post comment: ${jsonDecode(response.body)['message']}',
+        );
+      }
+    } catch (e) {
+      setState(() {
+        loadingComments = false;
+      });
+      print('Error posting comment: $e');
+    }
+    return;
+  }
 
   @override
   void initState() {
@@ -122,6 +156,8 @@ class _PostsScreenState extends State<PostScreen> {
                           )
                           .toList(),
                     ),
+                    CommonTextInput(hintText: "write your comment...", controller: _commnentController),
+                    CommonButton(text: "comment", onPressed: () => postComment(context)),
                   ],
                 ),
               ),

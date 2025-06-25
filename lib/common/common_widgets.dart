@@ -90,7 +90,10 @@ class CommonButton extends StatelessWidget {
         style: TextButton.styleFrom(
           backgroundColor: Color(0xFF2B2B2B), // dark background
           foregroundColor: Colors.white, // text color
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          padding: EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 21, // was 14, increased by 50%
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.zero, // no rounded corners
             side: BorderSide(
@@ -171,62 +174,69 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const accentColor = Color(0xFFFFB74D); // Warm amber border
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        color: const Color(0xFF2A2A2A),
-        elevation: 2,
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-          side: const BorderSide(color: accentColor, width: 1),
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+        maxWidth: 600,
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      title,
+        child: GestureDetector(
+          onTap: onTap,
+            child: Card(
+              color: const Color(0xFF2A2A2A),
+              elevation: 2,
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
+                side: const BorderSide(color: accentColor, width: 1),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: const TextStyle(
+                              fontSize: 16, // Smaller font for title
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Text(
+                          author,
+                          style: const TextStyle(
+                            fontSize: 13, // Smaller font for author
+                            color: Colors.white60,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      content.length > 220
+                          ? "${content.substring(0, 220)}..."
+                          : content,
                       style: const TextStyle(
-                        fontSize: 16, // Smaller font for title
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        fontSize: 15, // Smaller font for content
+                        color: Colors.white70,
                       ),
+                      maxLines: 6, // Adjusted for longer text
                       overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Text(
-                    author,
-                    style: const TextStyle(
-                      fontSize: 13, // Smaller font for author
-                      color: Colors.white60,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text(
-                content.length > 220
-                    ? "${content.substring(0, 220)}..."
-                    : content,
-                style: const TextStyle(
-                  fontSize: 15, // Smaller font for content
-                  color: Colors.white70,
+                  ],
                 ),
-                maxLines: 6, // Adjusted for longer text
-                overflow: TextOverflow.ellipsis,
               ),
-            ],
-          ),
+            )
         ),
       ),
     );
+
   }
 }
 

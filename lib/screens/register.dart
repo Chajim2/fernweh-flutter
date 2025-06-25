@@ -6,14 +6,21 @@ import 'package:fernweh/common/common_widgets.dart';
 import 'package:fernweh/common/utils.dart';
 import 'package:provider/provider.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+
+  RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController1 = TextEditingController();
   final TextEditingController passwordController2 = TextEditingController();
   final String registerUrl = "https://chajim.pythonanywhere.com/register";
-
-  RegisterScreen({super.key});
-
+ 
+ 
   void handleRegister(BuildContext context) async {
     String username = usernameController.text;
     String password1 = passwordController1.text;
@@ -40,57 +47,59 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("register"), leading: Icon(Icons.login)),
-      body: Consumer<UserProvider>(
-        builder: (context, UserProvider, child) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 250,
-                  child: CommonTextInput(
-                    hintText: "username",
-                    controller: usernameController,
-                  ),
-                ),
-                SizedBox(
-                  width: 250,
-                  child: CommonPasswordInput(
-                    hintText: "password",
-                    controller: passwordController1,
-                  ),
-                ),
-                SizedBox(
-                  width: 250,
-                  child: CommonPasswordInput(
-                    hintText: "password again",
-                    controller: passwordController2,
-                  ),
-                ),
-                SizedBox(
-                  width: 200,
-                  child: CommonButton(
-                    text: "register",
-                    onPressed: () => handleRegister(context),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: SizedBox(
-                    width: 200,
-                    child: CommonButton(
-                      text: "Login\ninstead",
-                      onPressed: () => Navigator.pushNamed(context, "/"),
+      return Scaffold(
+        appBar: AppBar(title: Text("register"), leading: Icon(Icons.login)),
+        body: Consumer<UserProvider>(
+          builder: (context, UserProvider, child) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 250,
+                    child: CommonTextInput(
+                      hintText: "username",
+                      controller: usernameController,
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
+                  SizedBox(
+                    width: 250,
+                    child: CommonPasswordInput(
+                      hintText: "password",
+                      controller: passwordController1,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 250,
+                    child: CommonPasswordInput(
+                      hintText: "password again",
+                      controller: passwordController2,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 200,
+                    child: CommonButton(
+                      text: "register",
+                      onPressed: () => handleRegister(context),
+                    ),
+                  ),
+                  SizedBox(height: 80,),
+                  Text("already have an account?"),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: SizedBox(
+                      width: 200,
+                      child: CommonButton(
+                        text: "login",
+                        onPressed: () => Navigator.pushNamed(context, "/login"),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      );
   }
 }

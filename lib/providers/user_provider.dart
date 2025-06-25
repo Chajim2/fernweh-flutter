@@ -1,33 +1,41 @@
 import 'package:flutter/material.dart';
 
-
 class UserProvider extends ChangeNotifier {
-  String username;
-  String jwtToken;
-  bool logedIn;
+  String _username;
+  String _jwtToken;
+  bool _loggedIn;
 
-  UserProvider({this.username = "", this.jwtToken = "", this.logedIn = false});
+  UserProvider({
+    String username = "",
+    String jwtToken = "",
+    bool loggedIn = false,
+  })  : _username = username,
+        _jwtToken = jwtToken,
+        _loggedIn = loggedIn;
 
-  void logOut(){
-    username = "";
-    jwtToken = "";
-    logedIn = false;
+  String get username => _username;
+  String get jwtToken => _jwtToken;
+  bool get loggedIn => _loggedIn;
+
+  void logOut() {
+    _username = "";
+    _jwtToken = "";
+    _loggedIn = false;
     notifyListeners();
   }
 
-  void logIn({required String newUsername, required String jwtToken}) {
-      username = newUsername;
-      this.jwtToken = jwtToken;
-      logedIn = true;
-      notifyListeners();
-  }
-
   String getUsername(){
-    return username;
+    return _username;
   }
 
   String getJwtToken(){
-    return jwtToken;
+    return _jwtToken;
   }
 
+  void logIn({required String newUsername, required String jwtToken}) {
+    _username = newUsername;
+    _jwtToken = jwtToken;
+    _loggedIn = true;
+    notifyListeners();
+  }
 }
