@@ -1,11 +1,11 @@
-create a
+komentare vypadaji divne - pouzivaji postcard - ma smysl delat vlatni tridu novou?? idk
+
+otazka jestli chci, aby se moje vlastni komentare zobrazovali v posts?????
 
 
-implement a function for sending a "who am i" request into backend when accessing the app on the web
-implement a check on the backend to decide whether the user should be redirected to home or whether they should log in again
 
-something like this for a phone app too lol
 
+something like this for a phone app too 
 have to think about whether to use the same system as in the other fernweh projects,
 one function for calling the endpoint wont be enough and redefining all the headers and shit
 is pain

@@ -176,67 +176,64 @@ class PostCard extends StatelessWidget {
     const accentColor = Color(0xFFFFB74D); // Warm amber border
     return Center(
       child: ConstrainedBox(
-        constraints: BoxConstraints(
-        maxWidth: 600,
-        ),
+        constraints: BoxConstraints(maxWidth: 600),
         child: GestureDetector(
           onTap: onTap,
-            child: Card(
-              color: const Color(0xFF2A2A2A),
-              elevation: 2,
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero,
-                side: const BorderSide(color: accentColor, width: 1),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            title,
-                            style: const TextStyle(
-                              fontSize: 16, // Smaller font for title
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Text(
-                          author,
+          child: Card(
+            color: const Color(0xFF2A2A2A),
+            elevation: 2,
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+              side: const BorderSide(color: accentColor, width: 1),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
                           style: const TextStyle(
-                            fontSize: 13, // Smaller font for author
-                            color: Colors.white60,
+                            fontSize: 16, // Smaller font for title
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      content.length > 220
-                          ? "${content.substring(0, 220)}..."
-                          : content,
-                      style: const TextStyle(
-                        fontSize: 15, // Smaller font for content
-                        color: Colors.white70,
                       ),
-                      maxLines: 6, // Adjusted for longer text
-                      overflow: TextOverflow.ellipsis,
+                      Text(
+                        author,
+                        style: const TextStyle(
+                          fontSize: 13, // Smaller font for author
+                          color: Colors.white60,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    content.length > 220
+                        ? "${content.substring(0, 220)}..."
+                        : content,
+                    style: const TextStyle(
+                      fontSize: 15, // Smaller font for content
+                      color: Colors.white70,
                     ),
-                  ],
-                ),
+                    maxLines: 6, // Adjusted for longer text
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
-            )
+            ),
+          ),
         ),
       ),
     );
-
   }
 }
 
@@ -282,6 +279,63 @@ class DefinitionCard extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CommonTextNonEdit extends StatelessWidget {
+  final String text;
+  final String name;
+
+  const CommonTextNonEdit({super.key, required this.text, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 600, minWidth: 100),
+      child: IntrinsicWidth(
+        child: IntrinsicHeight(
+          child: Container(
+            margin: EdgeInsets.only(left: 20.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Color(0xFFFFB74D), // amber
+                width: 1.2, // thin border
+              ),
+              borderRadius: BorderRadius.zero,
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.white60,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  text,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

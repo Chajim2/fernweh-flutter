@@ -5,7 +5,8 @@ import 'dart:convert';
 import 'package:fernweh/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'dart:html' as html;
+import 'package:fernweh/common/fraud.dart'
+    if (dart.library.html) 'package:fernweh/common/web_utils.dart';
 
 const Map<String, String> DEFAULT_HEADER = {'Content-Type': 'application/json'};
 const String refresh_key = "this_is_magic";
@@ -66,34 +67,17 @@ void showStyledAlert(BuildContext context, String title, String message) {
   );
 }
 
-void setCookie(String name, String value) {
-  html.document.cookie = '$name=$value; path=/; max-age=31536000';
-}
-
-String? getCookie(String name) {
-  final cookies = html.document.cookie?.split('; ') ?? [];
-  for (var cookie in cookies) {
-    final parts = cookie.split('=');
-    if (parts.length == 2 && parts[0] == name) return parts[1];
-  }
-  return null;
-}
-
-bool hasCookies() {
-  final cookieString = html.document.cookie;
-  return cookieString != null && cookieString.isNotEmpty;
-}
-
 Future<bool> shouldSkipLogin(BuildContext context) async {
   String refreshUrl = "https://chajim.pythonanywhere.com/refresh";
   String? refreshToken;
   String? username;
   if (kIsWeb) {
-    if (await hasCookies()) {
+    if (hasCookies()) {
       refreshToken = getCookie("refresh_token");
       username = getCookie("username");
-    } else
+    } else {
       return false;
+    }
   } else {
     refreshToken = await secure_storage.read(key: refresh_key);
     username = await secure_storage.read(key: username_key);
@@ -122,12 +106,12 @@ Future<bool> shouldSkipLogin(BuildContext context) async {
   return false;
 }
 
-Future<void> saveRefreshData(String refresh_token, String username) async {
+Future<void> saveRefreshData(String refreshToken, String username) async {
   if (kIsWeb) {
-    setCookie("refresh_token", refresh_token);
+    setCookie("refresh_token", refreshToken);
     setCookie("username", username);
   } else {
-    await secure_storage.write(key: refresh_key, value: refresh_token);
+    await secure_storage.write(key: refresh_key, value: refreshToken);
     await secure_storage.write(key: username_key, value: username);
   }
 }

@@ -18,13 +18,14 @@ class PostScreen extends StatefulWidget {
 
 class _PostsScreenState extends State<PostScreen> {
   bool loadingComments = true;
-  TextEditingController _commnentController = TextEditingController();
+  final TextEditingController _commnentController = TextEditingController();
   List<dynamic> comments = [];
-  
+
   Future<void> getComments() async {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-
+    print("HAHA");
+    print(args['id']);
     final response = await http.post(
       Uri.parse("https://chajim.pythonanywhere.com/get_comments"),
       headers: DEFAULT_HEADER,
@@ -33,6 +34,8 @@ class _PostsScreenState extends State<PostScreen> {
         "entry_id": args['id'],
       }),
     );
+    print("GIGIGDY");
+    print(jsonDecode(response.body));
     try {
       if (response.statusCode == 200) {
         comments = jsonDecode(response.body)['comments'];
@@ -56,7 +59,7 @@ class _PostsScreenState extends State<PostScreen> {
 
   Future<void> postComment(BuildContext context) async {
     final args =
-            ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     final response = await http.post(
       Uri.parse("https://chajim.pythonanywhere.com/post_comment"),
@@ -64,7 +67,7 @@ class _PostsScreenState extends State<PostScreen> {
       body: jsonEncode({
         "id": Provider.of<UserProvider>(context, listen: false).getJwtToken(),
         "post_id": args['id'],
-        "text" : _commnentController.text,
+        "text": _commnentController.text,
       }),
     );
     try {
@@ -133,7 +136,7 @@ class _PostsScreenState extends State<PostScreen> {
                         color: Colors.white70,
                       ),
                     ),
-                    SizedBox(height: 40,),
+                    SizedBox(height: 40),
 
                     Text(
                       "comments",
@@ -147,17 +150,21 @@ class _PostsScreenState extends State<PostScreen> {
                     Column(
                       children: comments
                           .map(
-                            (comment) => PostCard(
-                              title: "",
-                              author: comment['author'],
-                              content: comment['text'],
-                              onTap: () {},
+                            (comment) => CommonTextNonEdit(
+                              name: comment['author_name'],
+                              text: comment['text'],
                             ),
                           )
                           .toList(),
                     ),
-                    CommonTextInput(hintText: "write your comment...", controller: _commnentController),
-                    CommonButton(text: "comment", onPressed: () => postComment(context)),
+                    CommonTextInput(
+                      hintText: "write your comment...",
+                      controller: _commnentController,
+                    ),
+                    CommonButton(
+                      text: "comment",
+                      onPressed: () => postComment(context),
+                    ),
                   ],
                 ),
               ),

@@ -15,9 +15,9 @@ class ConfirmScreen extends StatefulWidget {
 }
 
 class _ConfirmScreenState extends State<ConfirmScreen> {
-   bool isSaved = false;   
-   Future<void> _handlePressed(BuildContext context) async {
-   final args =
+  bool isSaved = false;
+  Future<void> _handlePressed(BuildContext context) async {
+    final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     const String url = 'https://chajim.pythonanywhere.com/save_entry';
@@ -28,7 +28,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
         body: jsonEncode({
           "id": Provider.of<UserProvider>(context, listen: false).getJwtToken(),
           "text": args['text'].trim(),
-          "emotions" : args['emotions'],
+          "emotions": args['emotions'],
         }),
       );
       if (response.statusCode == 201) {
@@ -36,7 +36,11 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
           isSaved = true;
         });
         Navigator.pushNamed(context, "/home");
-        showStyledAlert(context, "Post saved",jsonDecode(response.body)['message'] );
+        showStyledAlert(
+          context,
+          "Post saved",
+          jsonDecode(response.body)['message'],
+        );
       } else {
         throw Exception(
           'Failed to load requests, ${jsonDecode(response.body)['message']}',
@@ -48,15 +52,15 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
       });
       print('Error fetching requests: $e');
     }
-   }
+  }
+
   @override
   Widget build(BuildContext context) {
     const backgroundColor = Color(0xFF1E1E1E);
     const accentColor = Color(0xFFFFB74D);
     //const textColor = Colors.white70;
-   final args =
+    final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-
 
     return Scaffold(
       backgroundColor: backgroundColor,
