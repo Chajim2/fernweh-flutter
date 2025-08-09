@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+.fernweh-backend/.vscode
+.fernweh-backend/__pycache
+.fernweh-backend/fernweh-env
