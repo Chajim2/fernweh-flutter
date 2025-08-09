@@ -19,7 +19,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<String> friendRequests = [];
   bool isLoadingRequests = true;
   TextEditingController requestController = TextEditingController();
-  
 
   @override
   void initState() {
@@ -42,7 +41,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
         final List<dynamic> requestsJson = data['requests'] ?? [];
-        final List<String> requestNames = requestsJson.map((name) => name as String).toList();
+        final List<String> requestNames = requestsJson
+            .map((name) => name as String)
+            .toList();
 
         setState(() {
           friendRequests = requestNames;
@@ -91,47 +92,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future<void> acceptFriendRequest(String name) async{
+  Future<void> acceptFriendRequest(String name) async {
     const url = 'https://chajim.pythonanywhere.com/accept_friend_request';
     final response = await http.post(
-        Uri.parse(url),
-        headers: DEFAULT_HEADER,
-        body: jsonEncode({
-          "id": Provider.of<UserProvider>(context, listen: false).getJwtToken(),
-          'friend_name' : name,
-        }),
-      );
-      showStyledAlert(context, "Friend request", jsonDecode(response.body)['message']);
-      if(response.statusCode == 200) fetchFriendRequests();
-
+      Uri.parse(url),
+      headers: DEFAULT_HEADER,
+      body: jsonEncode({
+        "id": Provider.of<UserProvider>(context, listen: false).getJwtToken(),
+        'friend_name': name,
+      }),
+    );
+    showStyledAlert(
+      context,
+      "Friend request",
+      jsonDecode(response.body)['message'],
+    );
+    if (response.statusCode == 200) fetchFriendRequests();
   }
-  Future<void> declineFriendRequest(String name) async{
+
+  Future<void> declineFriendRequest(String name) async {
     const url = 'https://chajim.pythonanywhere.com/decline_friend_request';
     final response = await http.post(
-        Uri.parse(url),
-        headers: DEFAULT_HEADER,
-        body: jsonEncode({
-          "id": Provider.of<UserProvider>(context, listen: false).getJwtToken(),
-          'friend_name' : name,
-        }),
-      );
-      showStyledAlert(context, "Friend request", jsonDecode(response.body)['message']);
-      if(response.statusCode == 200) fetchFriendRequests();
+      Uri.parse(url),
+      headers: DEFAULT_HEADER,
+      body: jsonEncode({
+        "id": Provider.of<UserProvider>(context, listen: false).getJwtToken(),
+        'friend_name': name,
+      }),
+    );
+    showStyledAlert(
+      context,
+      "Friend request",
+      jsonDecode(response.body)['message'],
+    );
+    if (response.statusCode == 200) fetchFriendRequests();
   }
-  
-  void sendFriendRequest() async{
+
+  void sendFriendRequest() async {
     String name = requestController.text;
     const url = 'https://chajim.pythonanywhere.com/send_friend_request';
-     final response = await http.post(
-        Uri.parse(url),
-        headers: DEFAULT_HEADER,
-        body: jsonEncode({
-          "id": Provider.of<UserProvider>(context, listen: false).getJwtToken(),
-          'friend_name' : name,
-        }),
-      );
-      showStyledAlert(context, "Friend request", jsonDecode(response.body)['message']);
-      if(response.statusCode == 200) fetchFriendRequests();
+    final response = await http.post(
+      Uri.parse(url),
+      headers: DEFAULT_HEADER,
+      body: jsonEncode({
+        "id": Provider.of<UserProvider>(context, listen: false).getJwtToken(),
+        'friend_name': name,
+      }),
+    );
+    showStyledAlert(
+      context,
+      "Friend request",
+      jsonDecode(response.body)['message'],
+    );
+    if (response.statusCode == 200) fetchFriendRequests();
   }
 
   @override
@@ -174,9 +187,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  CommonTextInput(hintText: "enter friend's name", controller: requestController),
-                  const SizedBox(height: 20,),
-                  CommonButton(text: "send request", onPressed: () => sendFriendRequest()),
+                  CommonTextInput(
+                    hintText: "enter friend's name",
+                    controller: requestController,
+                  ),
+                  const SizedBox(height: 20),
+                  CommonButton(
+                    text: "send request",
+                    onPressed: () => sendFriendRequest(),
+                  ),
                   const SizedBox(height: 40),
                   //Friend Requests Section
                   const Text(

@@ -1,0 +1,4 @@
+__pychacache__
+fastapi-env
+.DS_Store
+.env

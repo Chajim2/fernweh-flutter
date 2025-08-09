@@ -21,6 +21,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     const String url = 'https://chajim.pythonanywhere.com/save_entry';
+
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -43,7 +44,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
         );
       } else {
         throw Exception(
-          'Failed to load requests, ${jsonDecode(response.body)['message']}',
+          'Failed to save post, ${jsonDecode(response.body)['message']}',
         );
       }
     } catch (e) {
