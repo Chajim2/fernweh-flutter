@@ -1,3 +1,4 @@
+from datetime import datetime
 from re import S
 from typing import Optional
 from pydantic import BaseModel
@@ -33,3 +34,10 @@ class CommentInfo(BaseModel):
 class UserNoPassword(BaseModel):
     username : str
     id : UUID
+
+class FeedItem(BaseModel):
+    entry_id : int
+    text : str
+    author_name : str
+    timestamp : datetime
+    

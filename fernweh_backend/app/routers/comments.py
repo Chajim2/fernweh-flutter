@@ -16,7 +16,7 @@ router = APIRouter(
 )
 
 @router.post("/{entry_id}")
-def get_comments(entry_id : int, comment : schemas.CommentInfo, db: Session = Depends(get_session), current_user : models.User = Depends(get_current_user)):
+def post_comments(entry_id : int, comment : schemas.CommentInfo, db: Session = Depends(get_session), current_user : models.User = Depends(get_current_user)):
     new_comment = models.Comment(author_id = current_user.id, parent_id=entry_id, text = comment.text)
     db.add(new_comment)
     db.commit()
@@ -25,6 +25,11 @@ def get_comments(entry_id : int, comment : schemas.CommentInfo, db: Session = De
     return new_comment
 
 async def get_friends_comments(user_id, db: AsyncSession):
+    '''
+    takes in the id of a user and an async db session
+    return a list of all comments, ade by the user's friends (without his own)
+    THIS DOESNT WORK, IT ALSO RETURNS THE COMMENTS UNDER OTHER USERS' POSTS AAAAAAAAAAAAHHHHAHAHAH 
+    '''
     friends = await get_all_friends(user_id, db)
     friend_ids = [friend.id for friend in friends]
     

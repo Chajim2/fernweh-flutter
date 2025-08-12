@@ -42,14 +42,3 @@ app.include_router(friend_requests.router)
 app.include_router(friendships.router)
 app.include_router(entries.router)
 app.include_router(comments.router)
-
-
-@app.get("/entries/{id}")
-def get_single_entry(id: int, response : Response, db : Session = Depends(get_session), current_user : models.User = Depends(get_current_user)):
-    print(current_user.username)
-    if id > 5:
-        response.status_code = status.HTTP_404_NOT_FOUND
-        return {"message" : "u fucked up"}
-
-    return {"data" : f"requesting the post {id}"}
-

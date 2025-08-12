@@ -3,9 +3,9 @@ from typing import Annotated
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
-from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
-
+from sqlmodel.ext.asyncio.session import AsyncSession # <-- CORRECT AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.orm import sessionmaker
 
 
 DATABASE_URL = "postgresql://postgres:132465@localhost/fernweh_db"
@@ -14,7 +14,6 @@ ASYNC_DATABASE_URL = "postgresql+asyncpg://postgres:132465@localhost/fernweh_db"
 engine = create_engine(DATABASE_URL)
 async_engine = create_async_engine(ASYNC_DATABASE_URL, echo=True)
 
-AsyncSessionLocal = async_sessionmaker(bind = async_engine, expire_on_commit=False)
 
 async def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
@@ -28,7 +27,7 @@ def get_session():
         yield session
 
 async def get_async_session():
-    async with AsyncSessionLocal() as session:
+    async with AsyncSession(async_engine) as session:
         yield session
 
 
