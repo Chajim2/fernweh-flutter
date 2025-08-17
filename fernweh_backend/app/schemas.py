@@ -10,7 +10,8 @@ class LoginInfo(BaseModel):
   
 class LoginResponse(BaseModel):
     success : bool
-    access_token : str = ""
+    access_token : str
+    refresh_token : str
     message : str = ""
     token_type : Optional['str']
 
@@ -35,9 +36,13 @@ class UserNoPassword(BaseModel):
     username : str
     id : UUID
 
+class RefreshInfo(BaseModel):
+    refresh_token : str
+
 class FeedItem(BaseModel):
     entry_id : int
     text : str
     author_name : str
     timestamp : datetime
+    type : str
     

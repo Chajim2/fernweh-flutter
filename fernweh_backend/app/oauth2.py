@@ -13,6 +13,7 @@ from app.models import User
 SECRET_KEY = "KNSFOKNSAKNFSAFNOASNFO"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
+REFRESH_TOKEN_EXPIRE_MINUTES = 60 * 24 * 14
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -23,6 +24,15 @@ def create_access_token(data : dict):
     to_encode.update({"exp" : expire})
 
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+def create_refresh_token(data : dict):
+    to_encode = data.copy()
+
+    expire = datetime.now(timezone.utc) + timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp" : expire})
+
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
 
 def verify_access_token(token : str, credintials_exception, token_type : str = "Bearer"):
     try:

@@ -87,7 +87,8 @@ async def get_all_relevant_entries(db : AsyncSession = Depends(get_async_session
     feed_entries = [schemas.FeedItem(entry_id = entry.id,
                                     text = entry.text,
                                     author_name = entry.author.username,
-                                    timestamp = entry.timestamp)
+                                    timestamp = entry.timestamp,
+                                    type="entry")
                          for entry in result.all() if entry.timestamp is not None and entry.id is not None]
 
 
@@ -98,7 +99,8 @@ async def get_all_relevant_entries(db : AsyncSession = Depends(get_async_session
             models.Entry,
             cast(ColumnElement, models.Comment.parent_id == models.Entry.id)
         )
-        .where(or_(models.Entry.author_id == current_user.id, models.Comment.author_id == current_user.id))
+        .where(or_(models.Entry.author_id == current_user.id, models.Comment.author_id == current_user.id)).
+        options(selectinload(models.Comment.author)) #type: ignore
     )
 
     result = await db.exec(statement)
@@ -106,7 +108,8 @@ async def get_all_relevant_entries(db : AsyncSession = Depends(get_async_session
     feed_comments = [schemas.FeedItem(timestamp =  comment.timestamp,
                       author_name= comment.author.username,
                         text = comment.text,
-                        entry_id= comment.parent_id) 
+                        entry_id= comment.parent_id,
+                        type= "comment") 
                       for comment in result.all() if comment.timestamp is not None and comment.id is not None]
     
     full_feed = feed_entries + feed_comments
