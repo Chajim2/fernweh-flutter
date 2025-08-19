@@ -37,7 +37,6 @@ def register(loginInfo : LoginInfo, db : Session = Depends(get_session)):
  
 @router.post("/refresh")
 def validate_refresh_token(refresh_info : RefreshInfo):
-    print("GOT HERE BRO")
     print(refresh_info.refresh_token, "  GAHAAHAH")
     user_data = oauth2.verify_access_token(refresh_info.refresh_token, HTTPException(
         status.HTTP_401_UNAUTHORIZED, detail="Invalid  or outdated refresh token"))

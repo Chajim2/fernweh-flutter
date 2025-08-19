@@ -13,6 +13,7 @@ import app.routers.auth as auth
 import app.routers.friend_requests as friend_requests
 import app.routers.friendships as friendships
 import app.routers.entries as entries
+import app.routers.ai as ai
 import app.routers.comments as comments
 from app.oauth2 import get_current_user
 
@@ -42,3 +43,4 @@ app.include_router(friend_requests.router)
 app.include_router(friendships.router)
 app.include_router(entries.router)
 app.include_router(comments.router)
+app.include_router(ai.router)

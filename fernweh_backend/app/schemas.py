@@ -4,16 +4,20 @@ from typing import Optional
 from pydantic import BaseModel
 from uuid import UUID
 
+from yaml import Token
+
 class LoginInfo(BaseModel):
     username: str
     password: str
-  
-class LoginResponse(BaseModel):
+
+class TokenBase(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: Optional[str]
+
+class LoginResponse(TokenBase):
     success : bool
-    access_token : str
-    refresh_token : str
     message : str = ""
-    token_type : Optional['str']
 
 class TokenData(BaseModel):
     id : Optional[str]
@@ -24,16 +28,20 @@ class FriendRequest(BaseModel):
 class FriendRequestDecision(BaseModel):
     accepted : bool
 
-class EntryInfo(BaseModel):
-    title : str
+class EntryBase(BaseModel):
     text : str
+
+class EntryInfo(EntryBase):
+    title : str
     is_private : bool = False
 
 class CommentInfo(BaseModel):
     text : str
 
-class UserNoPassword(BaseModel):
+class UserBase(BaseModel):
     username : str
+
+class UserNoPassword(UserBase):
     id : UUID
 
 class RefreshInfo(BaseModel):
