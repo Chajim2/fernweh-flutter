@@ -26,7 +26,7 @@ async def lifespan(app : FastAPI):
 app = FastAPI(lifespan=lifespan)
 while True:
     try:
-        conn = psycopg2.connect(host="localhost", database="fernweh_db", user='postgres', password='132465', cursor_factory=RealDictCursor)
+        conn = psycopg2.connect(host="localhost", database="fernweh_backend", user='postgres', password='132465', cursor_factory=RealDictCursor)
         cursor = conn.cursor()
         print("connected to db")
         break

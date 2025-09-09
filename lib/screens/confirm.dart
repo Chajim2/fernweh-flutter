@@ -6,7 +6,6 @@ import 'package:fernweh/common/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:fernweh/providers/user_provider.dart';
 
-//implement confirm screen, use show styled alert, it looks sick!!!
 class ConfirmScreen extends StatefulWidget {
   const ConfirmScreen({super.key});
 

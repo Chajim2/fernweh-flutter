@@ -8,9 +8,9 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 
-DATABASE_URL = "postgresql://postgres:132465@localhost/fernweh_db"
+DATABASE_URL = "postgresql://postgres:132465@localhost/fernweh_backend"
 
-ASYNC_DATABASE_URL = "postgresql+asyncpg://postgres:132465@localhost/fernweh_db"
+ASYNC_DATABASE_URL = "postgresql+asyncpg://postgres:132465@localhost/fernweh_backend"
 engine = create_engine(DATABASE_URL)
 async_engine = create_async_engine(ASYNC_DATABASE_URL, echo=True)
 

@@ -1,6 +1,8 @@
+potrebuju vymyslet ty requesty tak aby fungovaly, s pouzitim postamna vse jede
+
 komentare vypadaji divne - pouzivaji postcard - ma smysl delat vlatni tridu novou?? idk
 
-otazka jestli chci, aby se moje vlastni komentare zobrazovali v posts?????
+otazka jestli chci, aby se moje vlastni komentare zobrazovaly v posts?????
 
 
 

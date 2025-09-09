@@ -1,5 +1,4 @@
 from datetime import datetime, timezone
-from sqlite3.dbapi2 import Timestamp
 from typing import Optional
 from uuid import UUID, uuid4
 from sqlalchemy import Column, Integer, String

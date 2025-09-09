@@ -14,6 +14,7 @@ def login(loginInfo : OAuth2PasswordRequestForm = Depends(), db : Session = Depe
     statement = select(models.User).where(models.User.username == loginInfo.username)
     user = db.exec(statement).first()
 
+    print("GOT HERE", user, hashed_password)
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Incorrect user credentials")
     
@@ -28,7 +29,7 @@ def login(loginInfo : OAuth2PasswordRequestForm = Depends(), db : Session = Depe
 @router.post('/register')
 def register(loginInfo : LoginInfo, db : Session = Depends(get_session)):
     loginInfo.password = utils.hash(loginInfo.password)
-    
+    print("NEW USER CREATED", loginInfo.username) 
     new_user = models.User(**loginInfo.model_dump())
     db.add(new_user)
     db.commit()
