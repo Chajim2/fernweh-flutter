@@ -47,3 +47,5 @@ app.*.map.json
 .fernweh-backend/.vscode
 .fernweh-backend/__pycache
 .fernweh-backend/fernweh-env
+
+.env
