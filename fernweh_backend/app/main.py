@@ -24,7 +24,7 @@ async def lifespan(app : FastAPI):
     print("it was a good run")
 
 app = FastAPI(lifespan=lifespan)
-while True:
+"""while True:
     try:
         conn = psycopg2.connect(host="localhost", database="fernweh_backend", user='postgres', password='132465', cursor_factory=RealDictCursor)
         cursor = conn.cursor()
@@ -33,7 +33,7 @@ while True:
     except Exception as e:
         print("sad day for connecting to db", e)
         time.sleep(3)
-        
+"""     
 @app.get('/')
 def nothing():
     return {"data" : "Nun to see her my friend"} 
