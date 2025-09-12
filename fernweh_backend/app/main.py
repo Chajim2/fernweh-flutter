@@ -16,6 +16,7 @@ import app.routers.entries as entries
 import app.routers.ai as ai
 import app.routers.comments as comments
 from app.oauth2 import get_current_user
+from fastapi.middleware.cors import CORSMiddleware
 
 @asynccontextmanager
 async def lifespan(app : FastAPI):
@@ -24,6 +25,20 @@ async def lifespan(app : FastAPI):
     print("it was a good run")
 
 app = FastAPI(lifespan=lifespan)
+
+origins = [
+    "http://localhost",  # For local development
+    "http://localhost:3000",
+    "https://fernweh-flutter.onrender.com" # Your Flutter app's domain
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (POST, OPTIONS, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 """while True:
     try:
         conn = psycopg2.connect(host="localhost", database="fernweh_backend", user='postgres', password='132465', cursor_factory=RealDictCursor)
