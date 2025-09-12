@@ -1,5 +1,6 @@
 from typing import Annotated
 import os
+from dotenv import load_dotenv
 
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Field, Session, SQLModel, create_engine, select
@@ -8,15 +9,13 @@ from sqlmodel.ext.asyncio.session import AsyncSession # <-- CORRECT AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = os.getenv("DB_URL") 
+load_dotenv()
+DATABASE_URL = os.getenv("DB_URL")
 if DATABASE_URL:
     ASYNC_DATABASE_URL = DATABASE_URL.replace("postgresql", "postgresql+asyncpg", 1) 
 
-else:
-    ASYNC_DATABASE_URL = "postgresql+asyncpg://postgres:132465@localhost/fernweh_backend"
-    DATABASE_URL = "postgresql://postgres:132465@localhost/fernweh_backend"
 engine = create_engine(DATABASE_URL)
-async_engine = create_async_engine(ASYNC_DATABASE_URL, echo=True)
+async_engine = create_async_engine(ASYNC_DATABASE_URL, echo=True, connect_args={"ssl" : "require"})
 
 
 async def create_db_and_tables():
