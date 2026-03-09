@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:fernweh/common/common_widgets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -35,7 +36,12 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
         setState(() {
           isSaved = true;
         });
-        Navigator.pushNamed(context, "/home");
+        final body = jsonDecode(response.body) as Map<String, dynamic>;
+        Navigator.pushNamed(
+          context,
+          "/similarities",
+          arguments: {"similar_posts": body['similar_posts']},
+        );
         showStyledAlert(
           context,
           "Post saved",

@@ -24,8 +24,6 @@ class _PostsScreenState extends State<PostScreen> {
   Future<void> getComments() async {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    print("HAHA");
-    print(args['id']);
     final response = await http.post(
       Uri.parse("https://chajim.pythonanywhere.com/get_comments"),
       headers: DEFAULT_HEADER,

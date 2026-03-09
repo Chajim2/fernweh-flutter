@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'providers/user_provider.dart';
 import 'package:fernweh/screens/confirm.dart';
 import 'package:fernweh/common/utils.dart';
+import 'package:fernweh/screens/similarities.dart';
 
 void main() {
   runApp(
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         "/post": (context) => PostScreen(),
         "/confirm": (context) => ConfirmScreen(),
         "/icon": (context) => Icon(Icons.home),
+        "/similarities": (context) => SimilaritiesScreen(),
       },
     );
   }
