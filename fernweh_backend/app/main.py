@@ -1,9 +1,7 @@
 import uuid
 from fastapi import Body, Depends, FastAPI, Response, status
 from contextlib import asynccontextmanager
-import psycopg2
 import time
-from psycopg2.extras import RealDictCursor
 from uuid import UUID
 from sqlalchemy.orm import Session
 
