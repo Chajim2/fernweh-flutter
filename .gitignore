@@ -49,3 +49,8 @@ app.*.map.json
 .fernweh-backend/fernweh-env
 
 .env
+
+fernweh-env/
+linux-env/
+venv/
+*.apk
